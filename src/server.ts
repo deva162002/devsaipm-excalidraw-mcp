@@ -408,7 +408,7 @@ export function registerTools(server: McpServer, distDir: string, store: Checkpo
     "read_me",
     {
       description: "Returns the Excalidraw element format reference with color palettes, examples, and tips. Call this BEFORE using create_view for the first time.",
-      annotations: { readOnlyHint: true },
+      annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
     },
     async (): Promise<CallToolResult> => {
       return { content: [{ type: "text", text: RECALL_CHEAT_SHEET }] };
@@ -430,7 +430,7 @@ Call read_me first to learn the element format.`,
           "JSON array string of Excalidraw elements. Must be valid JSON — no comments, no trailing commas. Keep compact. Call read_me first for format reference."
         ),
       }),
-      annotations: { readOnlyHint: true },
+      annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },
       _meta: { ui: { resourceUri } },
     },
     async ({ elements }): Promise<CallToolResult> => {
@@ -517,6 +517,7 @@ However, if the user wants to edit something on this diagram "${checkpointId}", 
     {
       description: "Upload diagram to excalidraw.com and return shareable URL.",
       inputSchema: { json: z.string().describe("Serialized Excalidraw JSON") },
+      annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: true },
       _meta: { ui: { visibility: ["app"] } },
     },
     async ({ json }): Promise<CallToolResult> => {
@@ -608,6 +609,7 @@ However, if the user wants to edit something on this diagram "${checkpointId}", 
     {
       description: "Update checkpoint with user-edited state.",
       inputSchema: { id: z.string(), data: z.string() },
+      annotations: { readOnlyHint: false, destructiveHint: true, openWorldHint: false },
       _meta: { ui: { visibility: ["app"] } },
     },
     async ({ id, data }): Promise<CallToolResult> => {
@@ -634,6 +636,7 @@ However, if the user wants to edit something on this diagram "${checkpointId}", 
     {
       description: "Read checkpoint state for restore.",
       inputSchema: { id: z.string() },
+      annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
       _meta: { ui: { visibility: ["app"] } },
     },
     async ({ id }): Promise<CallToolResult> => {
