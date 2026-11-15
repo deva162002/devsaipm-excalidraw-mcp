@@ -6,9 +6,14 @@ const handler = async (request: Request): Promise<Response> => {
   if (!token) {
     return new Response(request.method === "HEAD" ? null : "Not configured", { status: 404 });
   }
+  const bodyBytes = new TextEncoder().encode(token);
   return new Response(request.method === "HEAD" ? null : token, {
     status: 200,
-    headers: { "content-type": "text/plain; charset=utf-8" },
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "content-length": String(bodyBytes.length),
+      "cache-control": "no-store",
+    },
   });
 };
 
